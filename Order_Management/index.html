@@ -1,0 +1,16 @@
+<style>
+  .a {
+    background-color: green;
+  }
+  .b {
+    background-color: blue;
+  }
+</style>
+<input type="text" id="inputField" class="a" placeholder="Type something..." />
+
+<script src="jquery.js"></script>
+<script>
+  $("#inputField").keyup(() => {
+    $("#inputField").removeClass("a").addClass("b");
+  });
+</script>

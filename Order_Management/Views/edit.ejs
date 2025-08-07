@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Order</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #1f2a44;
+        --radius: 12px;
+        --shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
+        --accent: #6366f1;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--bg) 0%, #1f2a44 80%);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .form-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 2rem;
+        width: 100%;
+        max-width: 520px;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      h1::before {
+        content: "✏️";
+        font-size: 1.2rem;
+      }
+
+      .small {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+
+      .field {
+        margin-bottom: 1rem;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.2s, box-shadow 0.2s;
+      }
+
+      input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.35);
+      }
+
+      input[readonly] {
+        background: rgba(255, 255, 255, 0.02);
+        cursor: not-allowed;
+      }
+
+      .note {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .error {
+        color: #f87171;
+        font-size: 0.75rem;
+        margin-top: 4px;
+      }
+
+      .btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: 0.85rem 1.5rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        font-size: 1rem;
+        transition: transform 0.2s, filter 0.2s;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+
+      .btn:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-decoration: none;
+        border: 1px solid rgba(255,255,255,0.12);
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: background 0.2s;
+      }
+
+      .back-link:hover {
+        background: rgba(255,255,255,0.05);
+      }
+
+      .status {
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      .caps {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.6rem;
+        margin-bottom: 8px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-card">
+      <a href="/" class="back-link">&larr; Back to orders</a>
+      <h1>Edit Order</h1>
+      <p class="small">
+        Update quantity; order value recalculates. Quantity cannot exceed stock.
+      </p>
+
+      <form
+        action="/api/update/<%= order._id %>"
+        method="post"
+        id="editForm"
+        novalidate
+      >
+        <div class="field">
+          <label for="prodName">Product Name</label>
+          <input
+            type="text"
+            name="prodName"
+            id="prodName"
+            value="<%= order.prodName %>"
+            readonly
+          />
+        </div>
+
+        <div class="field">
+          <label for="prodRate">Product Rate</label>
+          <input
+            type="text"
+            name="prodRate"
+            id="prodRate"
+            value="<%= (order.orderValue / order.orderQty).toFixed(2) %>"
+            readonly
+          />
+        </div>
+
+        <div class="field">
+          <label for="orderQty">Order Quantity</label>
+          <input
+            type="number"
+            id="orderQty"
+            name="orderQty"
+            min="1"
+            value="<%= order.orderQty %>"
+            required
+          />
+          <div class="note" id="qtyNote">Available stock will be checked.</div>
+          <div class="error" id="qtyError" style="display: none;">
+            Quantity exceeds available stock.
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="orderValue">Order Value</label>
+          <input
+            type="text"
+            id="orderValue"
+            name="orderValue"
+            value="<%= order.orderValue %>"
+            readonly
+          />
+        </div>
+
+        <button type="submit" class="btn" id="updateBtn">
+          Update Order
+        </button>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const prodName = document.querySelector("#prodName").value;
+      const orderQtyInput = document.querySelector("#orderQty");
+      const orderValueInput = document.querySelector("#orderValue");
+      const prodRate = parseFloat(
+        document.querySelector("#prodRate").value || "0"
+      );
+      const qtyError = document.getElementById("qtyError");
+      const qtyNote = document.getElementById("qtyNote");
+      const updateBtn = document.getElementById("updateBtn");
+
+      async function refreshValue() {
+        const qty = parseFloat(orderQtyInput.value);
+        if (isNaN(qty) || qty <= 0) {
+          qtyError.style.display = "none";
+          qtyNote.textContent = "Enter a valid quantity.";
+          orderValueInput.value = "";
+          return;
+        }
+
+        try {
+          const res = await axios.get(
+            `/api/fetchData/${encodeURIComponent(prodName)}`
+          );
+          const data = res?.data || {};
+          const available = parseFloat(data.prodQty);
+          const rate = parseFloat(data.prodRate);
+          const effectiveRate = !isNaN(rate) ? rate : prodRate;
+          orderValueInput.value = (effectiveRate * qty).toFixed(2);
+
+          if (!isNaN(available)) {
+            if (qty > available) {
+              qtyError.style.display = "block";
+              qtyNote.textContent = `Only ${available} in stock.`; 
+              updateBtn.disabled = true;
+            } else {
+              qtyError.style.display = "none";
+              qtyNote.textContent = "In stock."; 
+              updateBtn.disabled = false;
+            }
+          } else {
+            qtyError.style.display = "none";
+            qtyNote.textContent = "Stock info unavailable.";
+            updateBtn.disabled = false;
+          }
+        } catch (err) {
+          console.error("fetch error", err);
+          qtyError.style.display = "none";
+          qtyNote.textContent = "Could not verify stock."; 
+          updateBtn.disabled = false;
+        }
+      }
+
+      orderQtyInput.addEventListener("input", () => {
+        refreshValue();
+      });
+
+      // initial check
+      window.addEventListener("DOMContentLoaded", () => {
+        refreshValue();
+      });
+
+      // prevent invalid submit
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (e) {
+          if (updateBtn.disabled) {
+            e.preventDefault();
+            alert("Fix quantity before submitting.");
+          }
+        });
+    </script>
+  </body>
+</html>

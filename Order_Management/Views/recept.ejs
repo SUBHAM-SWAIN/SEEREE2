@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Placed</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #1f2a44;
+        --radius: 12px;
+        --shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
+        --accent: #6366f1;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: linear-gradient(135deg, var(--bg) 0%, #1f2a44 80%);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .container {
+        max-width: 520px;
+        width: 100%;
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 2rem 1.5rem;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: var(--accent);
+        color: #fff;
+        padding: 0.45rem 1rem;
+        font-size: 0.65rem;
+        font-weight: 600;
+        border-radius: 999px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      h1::before {
+        content: "✔";
+        background: #22c55e;
+        color: #fff;
+        font-size: 1.1rem;
+        padding: 0.45rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      .divider {
+        border: none;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 1rem 0 1.5rem;
+      }
+
+      .details {
+        display: grid;
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+      }
+
+      .field {
+        display: flex;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+      }
+
+      .field strong {
+        font-weight: 600;
+      }
+
+      .price {
+        font-size: 1rem;
+      }
+
+      .actions {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .btn {
+        background: var(--accent);
+        border: none;
+        padding: 0.85rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #fff;
+        letter-spacing: 0.5px;
+        transition: transform 0.2s, filter 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+      }
+
+      .small {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 0.25rem;
+        text-align: center;
+      }
+
+      .back {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(255,255,255,0.04);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        text-decoration: none;
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: background 0.2s;
+      }
+
+      .back:hover {
+        background: rgba(255,255,255,0.08);
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 1.5rem 1rem;
+        }
+        h1 {
+          font-size: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/order" class="back">&larr; Back</a>
+      <div class="badge">Success</div>
+      <h1>Order Placed Successfully</h1>
+      <p>Thank you! Your order has been recorded. Details below:</p>
+      <hr class="divider" />
+      <div class="details">
+        <div class="field">
+          <span><strong>Order Date:</strong></span>
+          <span><%= orderDetails.orderDate %></span>
+        </div>
+        <div class="field">
+          <span><strong>Product Name:</strong></span>
+          <span><%= orderDetails.prodName %></span>
+        </div>
+        <div class="field">
+          <span><strong>Rate:</strong></span>
+          <span class="price"><%= orderDetails.prodRate %> &#8377;</span>
+        </div>
+        <div class="field">
+          <span><strong>Order Quantity:</strong></span>
+          <span><%= orderDetails.orderQty %></span>
+        </div>
+        <div class="field">
+          <span><strong>Order Value:</strong></span>
+          <span class="price"><%= orderDetails.orderValue %> &#8377;</span>
+        </div>
+      </div>
+      <div class="actions">
+        <a href="/order" class="btn">
+          Continue Shopping
+        </a>
+        <div class="small">
+          You can view all orders from the dashboard or edit this order from the
+          orders list.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

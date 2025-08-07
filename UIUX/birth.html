@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Soumya Sir</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d);
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: white;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      animation: glowText 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowText {
+      from {
+        text-shadow: 0 0 10px #ff6ec4, 0 0 20px #ff6ec4, 0 0 30px #ff6ec4;
+      }
+      to {
+        text-shadow: 0 0 20px #7367f0, 0 0 40px #7367f0, 0 0 60px #7367f0;
+      }
+    }
+
+    .cake {
+      font-size: 4rem;
+      animation: flicker 1.5s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.1); }
+    }
+
+    .balloon {
+      position: absolute;
+      width: 50px;
+      height: 70px;
+      background-color: #ff6b6b;
+      border-radius: 50% 50% 45% 45%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #333;
+      transform: translateX(-50%);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-60px); }
+      100% { transform: translateY(0); }
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      background: #fff;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #ff6b6b;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- Floating Balloons -->
+<div class="balloon" style="left: 10%; background:#feca57; animation-delay: 0s;"></div>
+<div class="balloon" style="left: 30%; background:#1dd1a1; animation-delay: 1s;"></div>
+<div class="balloon" style="left: 50%; background:#ff9ff3; animation-delay: 2s;"></div>
+<div class="balloon" style="left: 70%; background:#54a0ff; animation-delay: 3s;"></div>
+
+<!-- Main Content -->
+<div class="content">
+  <h1>🎉 Happy Birthday Soumya Sir 🎉</h1>
+  <div class="cake">🎂</div>
+  <button class="btn" onclick="playSong()">Play Birthday Song</button>
+</div>
+
+<!-- Audio -->
+<audio id="song" src="./WhatsApp Audio 2025-07-27 at 09.23.49_50908fa1.mp3"></audio>
+
+<!-- JS Particles & Music -->
+<script>
+  function playSong() {
+    const audio = document.getElementById("song");
+    audio.play().catch(() => alert("Tap again to allow sound."));
+  }
+
+  const canvas = document.getElementById("particles");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+
+  for (let i = 0; i < 120; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 1,
+      dx: (Math.random() - 0.5) * 0.5,
+      dy: (Math.random() - 0.5) * 0.5,
+      color: `hsl(${Math.random() * 360}, 100%, 70%)`
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+
+      p.x += p.dx;
+      p.y += p.dy;
+
+      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    }
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+</script>
+
+</body>
+</html>

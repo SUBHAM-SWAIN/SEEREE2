@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Page</title>
+  </head>
+  <body>
+    <h2>Edit User</h2>
+
+    <form action="/api/editUser/<%= user._id %>" method="POST">
+      <label for="name">Full Name:</label><br />
+      <input
+        type="text"
+        name="name"
+        id="name"
+        required
+        value="<%= user.name %>"
+      /><br /><br />
+
+      <label for="email">Email:</label><br />
+      <input
+        type="email"
+        name="email"
+        id="email"
+        required
+        value="<%= user.email %>"
+      /><br /><br />
+
+      <label for="phone">Phone Number:</label><br />
+      <input
+        type="tel"
+        name="phone"
+        id="phone"
+        required
+        value="<%= user.phone %>"
+      /><br /><br />
+
+      <br /><br />
+
+      <label for="age">Age:</label><br />
+      <input
+        type="number"
+        name="age"
+        id="age"
+        required
+        value="<%= user.age %>"
+      /><br /><br />
+
+      <label>Gender:</label><br />
+      <input type="radio" name="gender" value="male" <% if (user.gender ==
+      "male") { %> checked <% } %> /> Male<br />
+      <input type="radio" name="gender" value="female" <% if (user.gender ==
+      "femail") { %> checked <% } %> /> Female<br />
+      <input type="radio" name="gender" value="other" <% if (user.gender ==
+      "other") { %> checked <% } %> /> Other<br /><br />
+
+      <button type="submit">Edit</button>
+    </form>
+  </body>
+</html>

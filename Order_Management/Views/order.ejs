@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Place Order</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #1f2a44;
+        --radius: 12px;
+        --shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
+        --accent: #6366f1;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: rgba(255, 255, 255, 0.08);
+        --table-header-bg: rgba(255, 255, 255, 0.03);
+        --table-row-hover: rgba(255, 255, 255, 0.04);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--bg) 0%, #1f2a44 80%);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        gap: 2rem;
+      }
+
+      .form-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 2rem;
+        width: 100%;
+        max-width: 560px;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      .form-card h1 {
+        margin-top: 0;
+        font-size: 1.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .form-card h1::before {
+        content: "🛒";
+        font-size: 1.2rem;
+      }
+
+      .small {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .field-group {
+        display: grid;
+        gap: 1rem;
+        margin: 1rem 0 1.5rem;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 0.9rem;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.2s, box-shadow 0.2s;
+      }
+
+      input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.35);
+      }
+
+      input[readonly] {
+        background: rgba(255, 255, 255, 0.02);
+        cursor: not-allowed;
+      }
+
+      .inline {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .note {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      .btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: 0.85rem 1.5rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        font-size: 1rem;
+        transition: transform 0.2s, filter 0.2s;
+        width: 100%;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn:hover:not(:disabled) {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+      }
+
+      .status {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        font-size: 0.85rem;
+      }
+
+      .valid {
+        color: #22c55e;
+      }
+
+      .invalid {
+        color: #f87171;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+      }
+
+      /* TABLE STYLING */
+      .orders-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        overflow: auto;
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 1rem 1.25rem;
+        box-shadow: var(--shadow);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        min-width: 700px;
+      }
+
+      thead {
+        background: var(--table-header-bg);
+      }
+
+      thead th {
+        position: sticky;
+        top: 0;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      tbody tr {
+        transition: background 0.2s;
+      }
+
+      tbody tr:nth-child(odd) {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      tbody tr:hover {
+        background: var(--table-row-hover);
+      }
+
+      tbody td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      .action-links {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        font-size: 0.8rem;
+      }
+
+      .action-links a {
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 6px;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        transition: background 0.2s, transform 0.15s;
+      }
+
+      .action-links a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .no-orders {
+        text-align: center;
+        padding: 2rem;
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      @media (max-width: 900px) {
+        .form-card {
+          padding: 1.5rem;
+        }
+
+        table {
+          font-size: 0.8rem;
+          min-width: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-card">
+      <h1>Place Order</h1>
+      <p class="small">
+        Search product, choose quantity, and place your order.
+      </p>
+
+      <form id="orderForm" action="/api/placeOrder" method="POST" novalidate>
+        <div class="field-group">
+          <div>
+            <label for="prodName">Product Name</label>
+            <input
+              type="text"
+              name="prodName"
+              id="prodName"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label for="prodRate">Product Price</label>
+              <input type="text" name="prodRate" id="prodRate" readonly />
+            </div>
+
+            <div>
+              <label for="orderQty">Order Quantity</label>
+              <input type="number" name="orderQty" id="orderQty" min="1" />
+              <div class="note" id="quantityNote"></div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="checkbox-wrapper">
+              <input type="checkbox" id="check" disabled />
+              <label for="check" style="margin: 0">Product Found</label>
+            </div>
+            <div class="checkbox-wrapper">
+              <input type="checkbox" id="orderQtyCheck" disabled />
+              <label for="orderQtyCheck" style="margin: 0">Qty Available</label>
+            </div>
+          </div>
+
+          <div>
+            <label for="orderValue">Order Value</label>
+            <input type="number" name="orderValue" id="orderValue" readonly />
+          </div>
+
+          <input type="text" name="prodId" id="prodId" hidden />
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn" disabled>
+          Place Order
+        </button>
+        <div class="note">
+          Ensure product is valid and quantity is within stock before
+          submitting.
+        </div>
+      </form>
+    </div>
+
+    <div class="orders-wrapper" aria-label="Previous orders">
+      <% if (orders && orders.length) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Order Date</th>
+            <th>Product Name</th>
+            <th>Product Rate</th>
+            <th>Order Quantity</th>
+            <th>Order Value</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+          <tr>
+            <td><%= order.orderDate %></td>
+            <td><%= order.prodName %></td>
+            <td><%= (order.orderValue / order.orderQty).toFixed(2) %></td>
+            <td><%= order.orderQty %></td>
+            <td><%= order.orderValue %></td>
+            <td>
+              <div class="action-links">
+                <a href="/edit/<%= order._id %>">Edit</a>
+                <a href="/api/delete/<%= order._id %>">Delete</a>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <div class="no-orders">No orders yet. Place your first order above.</div>
+      <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // debounce helper
+      function debounce(fn, delay) {
+        let timer;
+        return function (...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+      }
+
+      const prodNameInput = document.querySelector("#prodName");
+      const prodRateInput = document.querySelector("#prodRate");
+      const prodIdInput = document.querySelector("#prodId");
+      const check = document.querySelector("#check");
+      const orderQtyInput = document.querySelector("#orderQty");
+      const orderQtyCheck = document.querySelector("#orderQtyCheck");
+      const orderValueInput = document.querySelector("#orderValue");
+      const submitBtn = document.querySelector("#submitBtn");
+      const quantityNote = document.querySelector("#quantityNote");
+
+      let fetchedData = null;
+
+      const fetchProduct = debounce(async (name) => {
+        if (!name.trim()) {
+          clearAll();
+          return;
+        }
+        try {
+          const res = await axios.get(
+            `/api/fetchData/${encodeURIComponent(name)}`
+          );
+          const data = res?.data;
+          if (data && typeof data.prodRate !== "undefined") {
+            fetchedData = data;
+            check.checked = true;
+            prodRateInput.value = data.prodRate;
+            prodIdInput.value = data._id || "";
+          } else {
+            clearAll();
+          }
+        } catch (err) {
+          console.error("fetch error", err);
+          clearAll();
+        }
+        evaluateQuantity();
+        updateSubmitState();
+      }, 300);
+
+      function clearAll() {
+        fetchedData = null;
+        check.checked = false;
+        orderQtyCheck.checked = false;
+        prodRateInput.value = "";
+        prodIdInput.value = "";
+        orderValueInput.value = "";
+        quantityNote.textContent = "";
+        orderQtyInput.classList.remove("invalid");
+      }
+
+      function evaluateQuantity() {
+        const qty = parseFloat(orderQtyInput.value);
+        if (!fetchedData || isNaN(qty) || qty <= 0) {
+          orderValueInput.value = "";
+          orderQtyCheck.checked = false;
+          quantityNote.textContent = "";
+          orderQtyInput.classList.remove("invalid");
+          return;
+        }
+        const available = parseFloat(fetchedData.prodQty);
+        orderValueInput.value = fetchedData.prodRate * qty;
+
+        if (available >= qty) {
+          orderQtyCheck.checked = true;
+          quantityNote.textContent = "In stock.";
+          quantityNote.className = "note";
+          orderQtyInput.classList.remove("invalid");
+        } else {
+          orderQtyCheck.checked = false;
+          quantityNote.textContent = `Only ${available} available.`;
+          quantityNote.className = "note";
+          orderQtyInput.classList.add("invalid");
+        }
+      }
+
+      function updateSubmitState() {
+        const qty = parseFloat(orderQtyInput.value);
+        const validQty =
+          !isNaN(qty) && qty > 0 && fetchedData && fetchedData.prodQty >= qty;
+        submitBtn.disabled = !validQty;
+      }
+
+      prodNameInput.addEventListener("input", (e) => {
+        fetchProduct(e.target.value);
+      });
+
+      orderQtyInput.addEventListener("input", () => {
+        evaluateQuantity();
+        updateSubmitState();
+      });
+
+      // Optional: prevent form submit if invalid
+      document.querySelector("#orderForm").addEventListener("submit", (e) => {
+        if (submitBtn.disabled) {
+          e.preventDefault();
+          alert("Fix product or quantity before submitting.");
+        }
+      });
+    </script>
+  </body>
+</html>

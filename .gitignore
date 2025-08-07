@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+.env
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Python
+__pycache__/
+*.pyc
+
+# Others
+*.bak
+*.zip
+*.tar.gz
