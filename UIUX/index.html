@@ -1,28 +1,15 @@
-<!-- <style>
-  @import url("https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Doto:wght@100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Pacifico&display=swap");
 
-  p {
-    font-family: "Bungee Spice", sans-serif;
+    <input type="number" id="fno" placeholder="First Number" /><br>
+    <input type="number" id="son" placeholder="Second Number" /><br>
+        <input type="text" id="res" />
 
-    text-align: center;
-    font-size: 45px;
-    color: red;
-    text-shadow: 5px 5px 5px black;
-  }
-</style>
+    <button onclick="add()">Add</button>
 
-<p>hello Seeree</p> -->
-
-<input id="number" name="number" placeholder="Number" />
-<button id="check" onclick="check()">Check</button>
-
-<script>
-  let check = () => {
-    let num = document.querySelector("#number").value;
-    if (num % 2 == 0) {
-      document.writeln("Even");
-    } else {
-      document.writeln("Odd");
-    }
-  };
-</script>
+    <script>
+      let add = () => {
+        document.querySelector("#res").value =
+          parseInt(document.querySelector("#fno").value) +
+          parseInt(document.querySelector("#son").value);
+      };
+    </script>
+  

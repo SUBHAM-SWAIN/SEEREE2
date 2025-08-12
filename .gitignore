@@ -5,6 +5,7 @@ dist/
 build/
 first_project/
 
+
 # OS files
 .DS_Store
 Thumbs.db
