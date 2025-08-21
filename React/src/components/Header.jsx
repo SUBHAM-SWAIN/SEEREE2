@@ -7,6 +7,9 @@ function Header() {
       <Link to={"/"}>Home</Link>
         <Link to={"/about"}>About</Link>
         <Link to={"/contact"}>Contact</Link>
+        <Link to={"/use_state"}>Use State</Link>
+        <Link to={"/form-handel"}>Form</Link>
+        <Link to={"/use-effect"}>Form</Link>
     </div>
   )
 }
