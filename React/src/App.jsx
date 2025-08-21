@@ -8,6 +8,7 @@ import Header from './components/Header';
 import Use_State from './components/Use_State';
 import Form from './components/Form';
 import UseEffect from './components/UseEffect';
+import StoreData from './components/Store';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/use_state" element={<Use_State />} />
         <Route path="/form-handel" element={<Form/>} />
         <Route path="/use-effect" element={<UseEffect></UseEffect>} />
+        <Route path="/store" element={<StoreData></StoreData>} />
       </Routes>
       </BrowserRouter>
     </div>

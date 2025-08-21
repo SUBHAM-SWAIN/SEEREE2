@@ -10,6 +10,7 @@ function Header() {
         <Link to={"/use_state"}>Use State</Link>
         <Link to={"/form-handel"}>Form</Link>
         <Link to={"/use-effect"}>Form</Link>
+        <Link to={"/store"}>Store</Link>
     </div>
   )
 }
