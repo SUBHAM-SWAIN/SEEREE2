@@ -9,6 +9,7 @@ import Use_State from './components/Use_State';
 import Form from './components/Form';
 import UseEffect from './components/UseEffect';
 import StoreData from './components/Store';
+import UseCallBack from './components/UseCallBack'; 
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/form-handel" element={<Form/>} />
         <Route path="/use-effect" element={<UseEffect></UseEffect>} />
         <Route path="/store" element={<StoreData></StoreData>} />
+        <Route path="/use-callback" element={<UseCallBack></UseCallBack>} />
       </Routes>
       </BrowserRouter>
     </div>

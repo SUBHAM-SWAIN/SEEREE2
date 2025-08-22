@@ -11,6 +11,7 @@ function Header() {
         <Link to={"/form-handel"}>Form</Link>
         <Link to={"/use-effect"}>Form</Link>
         <Link to={"/store"}>Store</Link>
+        <Link to={"/use-callback"}>Use CallBack</Link>
     </div>
   )
 }
