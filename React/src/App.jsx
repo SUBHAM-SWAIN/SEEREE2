@@ -10,6 +10,7 @@ import Form from './components/Form';
 import UseEffect from './components/UseEffect';
 import StoreData from './components/Store';
 import UseCallBack from './components/UseCallBack'; 
+import UseMemo from './components/UseMemo';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/use-effect" element={<UseEffect></UseEffect>} />
         <Route path="/store" element={<StoreData></StoreData>} />
         <Route path="/use-callback" element={<UseCallBack></UseCallBack>} />
+        <Route path="/use-memo" element={<UseMemo></UseMemo>} />
       </Routes>
       </BrowserRouter>
     </div>
