@@ -11,6 +11,7 @@ import UseEffect from './components/UseEffect';
 import StoreData from './components/Store';
 import UseCallBack from './components/UseCallBack'; 
 import UseMemo from './components/UseMemo';
+import UseNavigate from './components/UseNavigate';
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
         <Route path="/store" element={<StoreData></StoreData>} />
         <Route path="/use-callback" element={<UseCallBack></UseCallBack>} />
         <Route path="/use-memo" element={<UseMemo></UseMemo>} />
+        <Route path="/use-navigate" element={<UseNavigate></UseNavigate>} />
+
       </Routes>
       </BrowserRouter>
     </div>

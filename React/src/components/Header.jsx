@@ -13,6 +13,7 @@ function Header() {
         <Link to={"/store"}>Store</Link>
         <Link to={"/use-callback"}>Use CallBack</Link>
         <Link to={"/use-memo"}>Use memo</Link>
+        <Link to={"/use-navigate"}>Use Navigate</Link>
     </div>
   )
 }
